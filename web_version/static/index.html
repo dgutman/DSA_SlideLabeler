@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Emory QR Generator</title>
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.css" rel="stylesheet">
+    
+
     <style type="text/css">
     body {
         font-family: Helvetica, sans-serif;
@@ -63,7 +63,7 @@
                     <h1>Generated QR Code</h1>
                     <p>QR Code generated</p>
                     <div id="qr_img_info"></div>
-                    <div id="qr_img"></div>
+                    <div id="qr_img_div"><img id="qr_img"></div>
                 </div>
                 <div class="tab-pane" id="yellow">
                     <h1>How to use</h1>
@@ -80,6 +80,23 @@
                             return false;
                         });
                     });
+
+                    $(function() {
+                        $('a#get_me_checkers').bind('click', function() {
+                            $.getJSON('/api/image_utils/_get_checkers', {
+                                a: $('input[name="a"]').val(),
+                                b: $('input[name="b"]').val()
+                            }, function(data) {
+                            	console.log(data);
+                               // $("#checker_results").text(data.result);
+                               	$("#qr_img").attr('src','https://localhost:5000/api/image_utils/checkerboard');
+
+                            });
+                            return false;
+                        });
+                    });
+
+
                     </script>
                     <h1>jQuery Example</h1>
                     <p>
@@ -87,13 +104,18 @@
                         <input type=text size=5 name=b> =
                         <span id=result>?</span>
                         <p><a href=# id=calculate>calculate server side</a>
+                    </p>
+                    <p> <h1>Get Colored Checkerboard</h1>
+                    	<a href=# id=get_me_checkers>Grab a Colored Checkerboard</a>
+                    	<span id="checker_results">???</span>
+                    	<img id="checker_demo">
+
                 </div>
             </div>
         </div>
     </div>
     </div>
     <!-- jQuery (necessary for Bootstraps JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <!-- First, include the Webcam.js JavaScript Library -->
     <script type="text/javascript" src="js/webcam.js"></script>
@@ -108,9 +130,8 @@
         jpeg_quality: 90
     });
     Webcam.attach('#my_camera');
-    </script>
+    
     <!-- Code to handle taking the snapshot and displaying it locally -->
-    <script language="JavaScript">
     function take_snapshot() {
         // take snapshot and get image data
         Webcam.snap(function(data_uri) {
@@ -137,6 +158,9 @@
                 $("#qr_img_info").text('HI HOW ARE YOU');
                 //Some CODE SHOULD GO HERE TO SHOW THE IMAGE
                 $('.nav-tabs a[href="#qr_view"]').tab('show'); //Now switch to the QR CODE
+                $("#checker_demo").attr('src','https://localhost:5000/api/image_utils/checkerboard')
+				
+
             });
 
         });
@@ -146,19 +170,9 @@
 
     }
 
-    //Webcam.upload()	Upload a saved image to your server via binary AJAX. Fires progress events (see below).
-    // Webcam.on( 'load', function() {
-    //         // library is loaded
-    //     } );
 
-    //     Webcam.on( 'live', function() {
-    //         // camera is live, showing preview image
-    //         // (and user has allowed access)
-    //     } );
 
-    //     Webcam.on( 'error', function(err) {
-    //         // an error occurred (see 'err')
-    //     } );
+   
     </script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
