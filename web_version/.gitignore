@@ -1,0 +1,6 @@
+.ipynb_checkpoints
+__MAC*
+*.pyc
+/BarCodetoQR.ipynb
+__MACOSX
+addl_libs
